@@ -1,6 +1,0 @@
-name = input()			
-age = input()			
-address = input()			
-print("My Name is : ", name)			
-print("My Age Is :", age)			
-print("My Address Is :", address)			
