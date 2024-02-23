@@ -2,12 +2,28 @@
 <html>
 <head>
     <title>{{ title }}</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <h1>Welcome to My Flask App</h1>
-    <p>This is a simple Flask application.</p>
-    <form action="/login" method="get">
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+        <h1>Welcome to My Flask App</h1>
+        <p>This is a simple Flask application.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <form action="/login" method="get">
+                    <button type="submit" class="btn btn-primary mr-2">Login</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <!-- Registration Button -->
+                <form action="/register" method="get">
+                    <button type="submit" class="btn btn-success mr-2">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
