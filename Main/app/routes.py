@@ -17,6 +17,21 @@ db = mysql.connector.connect(
     database=app.config['MYSQL_DB']
 )
 
+def validate_registration(username, email, password):
+    """
+    Validate user registration data:
+    - Username must be alphanumeric and between 5 and 20 characters.
+    - Email must be in a valid format.
+    - Password must be at least 8 characters long.
+    """
+    if not username.isalnum() or len(username) < 5 or len(username) > 20:
+        return False
+    if '@' not in email or '.' not in email:
+        return False
+    if len(password) < 8:
+        return False
+    return True
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -37,7 +52,7 @@ def home():
 
 @app.route('/register')
 def show_register():
-    return render_template('register.html')
+    return render_template('register.html',message='')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -64,8 +79,7 @@ def login():
                 print(user)
                 if user[0] == username and user[1] == password:
                     return render_template('success.html', employee_id=user[2], screen = "Login")
-        else:
-            return render_template('login.html', message='Invalid username or password')
+        return render_template('login.html', message='Invalid username or password')
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -73,6 +87,12 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+
+        # Validate registration data
+        if not validate_registration(username, email, password):
+            return render_template('register.html', message='Invalid registration data')
+
+
         # Add code to insert username and password into your database
         mycursor = db.cursor()
         sql = "INSERT INTO user_info (username, email, password ) VALUES (%s, %s, %s)"
@@ -86,15 +106,42 @@ def register():
         print("username! ", username, "Pass : ",password)
         return render_template('success.html', employee_id = user[0], screen = "Register")
 
-# @app.route('/success')
-# def success():
-#     return 'Login Successful'
 
-@app.route('/detail')
+@app.route('/detail', methods=['POST'])
 def detail_view():
      if request.method == 'POST':
-         id = request.form['id']
-         print(id)
+        id = request.form['id']
+        cursor = db.cursor()
+        cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
+        user = cursor.fetchone()
+        if user:
+            return render_template('user_detail.html', user=user)
+        else:
+            return "User not found"
+
+@app.route('/edit_detail', methods=['POST'])
+def detail_view_edit():
+     if request.method == 'POST':
+        id = request.form['userId']
+        cursor = db.cursor()
+        cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
+        user = cursor.fetchone()
+        if user:
+            return render_template('user_detail_edit.html', user=user)
+        else:
+            return "User not found"
+
+@app.route('/update_detail', methods=['POST'])
+def update_detail():
+     if request.method == 'POST':
+        id = request.form['userId']
+        cursor = db.cursor()
+        cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
+        user = cursor.fetchone()
+        if user:
+            return render_template('user_detail_edit.html', user=user)
+        else:
+            return "User not found"
 
 if __name__ == '__main__':
     app.run(debug=False)
