@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Detail</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>User Detail</h1>
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <th scope="row">Id</th>
+                    <td>{{ user[4] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Username</th>
+                    <td>{{ user[0] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>{{ user[1] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{ user[6] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Contact No</th>
+                    <td>{{ user[7] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Description</th>
+                    <td>{{ user[8] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Join Date</th>
+                    <td>{{ user[9] }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Gender</th>
+                    <td>{{ user[10] }}</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Form for submitting the user ID -->
+        <form action="/edit_detail" method="POST">
+            <input type="hidden" name="userId" value="{{ user[4] }}">
+            <button type="submit" class="btn btn-primary">Edit</button>
+        </form>
+    </div>
+</body>
+</html>
