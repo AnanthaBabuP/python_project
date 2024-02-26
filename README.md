@@ -11,3 +11,7 @@ LoginForm With DB Connect Data →　完了
 Register Process →　完了
 Detail View →　完了
 Edit Process →　対応中(30%)
+
+#3004Chages
+Edit Process  →　完了
+valitation Process  →　完了

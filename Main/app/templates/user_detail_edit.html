@@ -6,57 +6,138 @@
     <title>Edit User Detail</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #e29696;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .btn-update {
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .red-text {
+            color: red;
+        }
+
+        /* Style for red color */
+        .error-message {
+            color: red;
+        }
+
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>Edit User Detail</h1>
-        <form action="/update_detail" method="POST">
-            <input type="hidden" name="userId" value="{{ user[4] }}">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" value="{{ user[0] }}">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" value="{{ user[1] }}">
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" class="form-control" id="address" name="address" value="{{ user[6] }}">
-            </div>
-            <div class="form-group">
-                <label for="contact">Contact No</label>
-                <input type="text" class="form-control" id="contact" name="contact" value="{{ user[7] }}">
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description">{{ user[8] }}</textarea>
-            </div>
-            <div class="form-group">
-                <label for="join_date">Join Date</label>
-                <input type="date" class="form-control" id="join_date" name="join_date" value="{{ user[9] }}">
-            </div>
-            <div class="form-group">
-                <label>Gender</label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="gender_male" value="male" {{ "checked" if user[10] == "male" else "" }}>
-                    <label class="form-check-label" for="gender_male">Male</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="gender_female" value="female" {{ "checked" if user[10] == "female" else "" }}>
-                    <label class="form-check-label" for="gender_female">Female</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="gender" id="gender_other" value="other" {{ "checked" if user[10] == "other" else "" }}>
-                    <label class="form-check-label" for="gender_other">Other</label>
+        <div class="form-container">
+             <!-- Apply red color to error messages -->
+            {% if messages|length > 0 %}
+            <div class="message-div">
+                <div class="col-md-10">
+                    {% for msg in messages %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endfor %}
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+            {% endif %}
+            <h1>Edit User Detail</h1>
+            <form action="/update_detail" method="POST">
+                <input type="hidden" name="userId" value="{{ user[4] }}">
+                <div class="form-group row">
+                    <label for="username" class="col-sm-3 col-form-label text-right">Username :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="username" name="username" value="{{ user[0] }}" readonly>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="email" class="col-sm-3 col-form-label text-right">E-mail :</label>
+                    <div class="col-sm-8">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user[1] }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="address" class="col-sm-3 col-form-label text-right">Address :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="address" name="address" value="{{ user[6] }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="contact" class="col-sm-3 col-form-label text-right">Contact No :</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="contact" name="contact" value="{{ user[7] }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="description" class="col-sm-3 col-form-label text-right">Description :</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" id="description" name="description">{{ user[8] }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="join_date" class="col-sm-3 col-form-label text-right">Join Date :</label>
+                    <div class="col-sm-8">
+                        <input type="date" class="form-control" id="join_date" name="join_date" value="{{ user[9] }}">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label text-right">Gender :</label>
+                    <div class="col-sm-8">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_male" value="male" {{ "checked" if user[10] == "male" else "" }}>
+                            <label class="form-check-label" for="gender_male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_female" value="female" {{ "checked" if user[10] == "female" else "" }}>
+                            <label class="form-check-label" for="gender_female">Female</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_other" value="other" {{ "checked" if user[10] == "other" else "" }}>
+                            <label class="form-check-label" for="gender_other">Other</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-update">Update</button>
+                    </div>
+                    <div class="col">
+                        <button onclick="window.history.back();" type="button" class="btn btn-secondary btn-update">Back</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Bootstrap JS (optional, if needed for JavaScript functionality) -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Your custom JavaScript code goes here (if any) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

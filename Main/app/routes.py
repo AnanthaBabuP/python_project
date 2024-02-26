@@ -1,6 +1,8 @@
 # from app import app
 from flask import Flask, render_template, request, redirect, url_for
+from datetime import datetime
 import mysql.connector
+import bcrypt
 app = Flask(__name__)
 
 # MySQL Configuration
@@ -115,7 +117,7 @@ def detail_view():
         cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
         user = cursor.fetchone()
         if user:
-            return render_template('user_detail.html', user=user)
+            return render_template('user_detail.html', user=user,message="")
         else:
             return "User not found"
 
@@ -127,7 +129,7 @@ def detail_view_edit():
         cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
         user = cursor.fetchone()
         if user:
-            return render_template('user_detail_edit.html', user=user)
+            return render_template('user_detail_edit.html', user=user,error= [])
         else:
             return "User not found"
 
@@ -135,13 +137,86 @@ def detail_view_edit():
 def update_detail():
      if request.method == 'POST':
         id = request.form['userId']
+        userName = request.form['username']
+        email = request.form['email']
+        address = request.form['address']
+        contact = request.form['contact']
+        description = request.form['description']
+        join_date = request.form['join_date']
+        gender = request.form['gender']
+        user = []
+
+        # Append values to the list at specific positions
+        user.extend([None] * 11) 
+        user[4] = id
+        user[0] = userName
+        user[1] = email
+        user[6] = address
+
+        user[7] = contact
+        user[8] = description
+        user[9] = join_date
+        user[10] = gender
+
+        print(request.form)
+        message = []
+        
+        if email == 'None' or email == '':
+            message.append("Please Enter Email ")
+        if address == 'None' or address == '':
+            message.append("Please Enter Address")
+        if contact == 'None' or contact == '':
+            message.append("Please Enter Contact")
+        if description == 'None' or description == '':
+            message.append("Please Enter Description")
+        if join_date == 'None' or join_date == '':
+            message.append("Please Enter Join Date")
+        if gender == 'None' or gender == '':
+            message.append("Please Select Gender")
+
+        if len(message) > 0 :
+            return render_template('user_detail_edit.html', user=user,messages= message)
+        
+        # Parse the date string into a datetime object
+        date_object = datetime.strptime(join_date, "%Y-%m-%d")
+
+        # Format the datetime object into yyyymmdd format
+        formatted_date = date_object.strftime("%Y%m%d")
+
+        print(formatted_date)
         cursor = db.cursor()
-        cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
+        cursor.execute("SELECT * FROM user_info WHERE id = %s", (id,))
+        val = cursor.fetchone()
+        if val[0] != userName or  val[1] != email:
+                print("Inside User Info")
+                update_query = "UPDATE user_info SET username = %s ,email = %s WHERE id = %s"
+                cursor.execute(update_query, (userName, email, id))
+
+        cursor.execute("SELECT * FROM user_details WHERE id = %s", (id,))
         user = cursor.fetchone()
         if user:
-            return render_template('user_detail_edit.html', user=user)
+            update_query = "UPDATE user_details SET address = %s, contact_no = %s, description = %s, DOJ = %s, gender = %s  WHERE id = %s"
+            cursor.execute(update_query, (address, contact, description, join_date, gender, id))
+            result = "User details updated successfully."
+           
         else:
-            return "User not found"
+            # User doesn't exist, insert new record
+            insert_query = "INSERT INTO user_details (id, address, contact_no, description, DOJ, gender) VALUES (%s, %s,%s, %s,%s, %s)"
+            cursor.execute(insert_query, (id, address, contact, description, formatted_date, gender))
+            result = "New user details inserted successfully."
+        db.commit()
+        cursor.execute("SELECT u.*, d.* FROM user_info u LEFT JOIN user_details d ON u.id = d.id WHERE u.id = %s", (id,))
+        user = cursor.fetchone()
+        return render_template('user_detail.html', user=user, message=result)
+
+@app.route('/detail_back', methods=['POST'])
+def detail_back():
+    userId = request.form['userId']
+    return render_template('success.html', employee_id = userId, screen = "Login")
+
+@app.route('/logout')
+def logout():
+   return render_template('login.html', title='Home')
 
 if __name__ == '__main__':
     app.run(debug=False)
