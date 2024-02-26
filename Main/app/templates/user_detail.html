@@ -6,9 +6,30 @@
     <title>User Detail</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <!-- Custom CSS -->
+     <style>
+        .btn-update {
+            width: 100%;
+            padding: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
+        <!-- Display message here -->
+        {% if message %}
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <h1>User Detail</h1>
         <table class="table table-bordered">
             <tbody>
@@ -50,8 +71,27 @@
         <!-- Form for submitting the user ID -->
         <form action="/edit_detail" method="POST">
             <input type="hidden" name="userId" value="{{ user[4] }}">
-            <button type="submit" class="btn btn-primary">Edit</button>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-update">Edit</button>
+                </div>
+                <!-- <div class="col">
+                    <button onclick="window.history.back();" type="button" class="btn btn-secondary btn-update">Back</button>
+                </div> -->
+            </div>
+        </form>
+        <!-- Back button form -->
+        <form action="/detail_back" method="POST">
+            <div class="row">
+                <div class="col">
+                    <input type="hidden" name="userId" value="{{ user[4] }}">
+                    <button type="submit" class="btn btn-secondary btn-update">Back</button>
+                </div>
+            </div>
         </form>
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
