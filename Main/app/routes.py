@@ -62,6 +62,17 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
+        message = []
+        if(username == ''):
+            message.append("Enter UserName")
+            return render_template('login.html', message='Enter UserName')
+        elif(password == ''):
+            message.append("Enter Password") 
+            return render_template('login.html', message='Enter Password')
+
+        if(len(message) > 0):
+            print(len(message))
+
         # Without DB Connection
 
         # # Check if the username exists and the password matches
@@ -79,9 +90,30 @@ def login():
         if users:
             for user in users:
                 print(user)
-                if user[0] == username and user[1] == password:
+                # Hash the password
+                stored_password = user[1]  # Retrieve the hashed password from the database
+                # Print the hashed password
+                # Verify the provided password with the stored hashed password
+                if verify_password(password, stored_password):
+                    print("Password Matched! User Authenticated.")
                     return render_template('success.html', employee_id=user[2], screen = "Login")
+                else:
+                    print("Invalid Password! Authentication Failed.")
+
         return render_template('login.html', message='Invalid username or password')
+
+
+# Function to hash a password
+def hash_password(password):
+    # Generate a random salt and hash the password
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+    return hashed_password
+
+# Function to verify a password
+def verify_password(input_password, hashed_password):
+    # Check if the input password matches the hashed password
+    return bcrypt.checkpw(input_password.encode('utf-8'), hashed_password.encode('utf-8'))
+
 
 @app.route('/register', methods=['POST'])
 def register():
