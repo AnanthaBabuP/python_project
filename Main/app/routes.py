@@ -62,16 +62,10 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        message = []
         if(username == ''):
-            message.append("Enter UserName")
             return render_template('login.html', message='Enter UserName')
         elif(password == ''):
-            message.append("Enter Password") 
             return render_template('login.html', message='Enter Password')
-
-        if(len(message) > 0):
-            print(len(message))
 
         # Without DB Connection
 
