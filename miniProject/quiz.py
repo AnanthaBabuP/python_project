@@ -10,7 +10,7 @@ if question == "7" or question == "seven":  # Check Answer and Answer is corect 
     print("Correct Answer") 
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:', question)
     print('Correct Answer is : seven')
 
 question = input("In Which direction does the sun rise? ")    # Question No 2
@@ -18,7 +18,7 @@ if question.upper() == "EAST" :  # Check Answer and Answer is corect execut to i
     print("Correct Answer")
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:',question.upper())
     print('Correct Answer is : EAST')
 
 question = input("What is our national bird? ")    # Question No 3
@@ -26,7 +26,7 @@ if question.upper() == "BEACOCK":  # Check Answer and Answer is corect execut to
     print("Correct Answer")
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:', question.upper())
     print('Correct Answer is : BEACOCK')
 
 question = input("Which is the fastest animal in the land? ")    # Question No 4
@@ -34,7 +34,7 @@ if question.upper() == "CHEETAH":  # Check Answer and Answer is corect execut to
     print("Correct Answer")
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:', question.upper())
     print('Correct Answer is : CHEETAH')
 
 question = input("Which animal is known as the 'Ship of the Desert'? ")    # Question No 5
@@ -42,7 +42,7 @@ if question.upper() == "CAMEL":  # Check Answer and Answer is corect execut to i
     print("Correct Answer")
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:', question.upper())
     print('Correct Answer is : CAMEL')
 
 question = input("Which festival is called the festival of colours? ")    # Question No 6
@@ -50,7 +50,7 @@ if question.upper() == "HOLI":  # Check Answer and Answer is corect execut to if
     print("Correct Answer")
     count+=1
 else :  # Else Run this else part
-    print('Incorrect Answer:')
+    print('Incorrect Answer:',question.upper())
     print('Correct Answer is : HOLI')
 
 
